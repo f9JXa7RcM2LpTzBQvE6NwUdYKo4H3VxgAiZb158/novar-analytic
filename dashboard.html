@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduApp Analytics Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsG3augBnr0y7ZF9eqYlR-t8AsNZqW2IA",
+            authDomain: "student-portal-a2284.firebaseapp.com",
+            projectId: "student-portal-a2284",
+            storageBucket: "student-portal-a2284.appspot.com",
+            messagingSenderId: "854780246625",
+            appId: "1:854780246625:web:c5c3bfe640cab43d668820",
+            measurementId: "G-3XBPR42ETT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+            } else {
+                document.getElementById('userEmail').textContent = user.email;
+                document.getElementById('userName').textContent = user.displayName || "Admin";
+                loadAnalyticsData();
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            });
+        });
+
+        function loadAnalyticsData() {
+            // Initialize all charts
+            initMonthlyComparisonChart();
+            initUserGrowthChart();
+            initEngagementTrendChart();
+            initContentPerformanceChart();
+            initSessionDurationChart();
+            initNewVsReturningChart();
+            initPlatformUsageChart();
+            initCoursePopularityChart();
+        }
+
+        // Chart initialization functions
+        function initMonthlyComparisonChart() {
+            const ctx = document.getElementById('monthlyComparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['April', 'May', 'June'],
+                    datasets: [
+                        {
+                            label: 'New Users',
+                            data: [12453, 15876, 18234],
+                            backgroundColor: 'rgba(79, 70, 229, 0.8)',
+                            borderColor: 'rgba(79, 70, 229, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Returning Users',
+                            data: [9876, 13245, 15678],
+                            backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                            borderColor: 'rgba(99, 102, 241, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Monthly User Acquisition'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        
+        function initUserGrowthChart() {
+            const ctx = document.getElementById('userGrowthChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [
+                        {
+                            label: 'April',
+                            data: [10234, 11245, 11876, 12453],
+                            borderColor: 'rgba(79, 70, 229, 1)',
+                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'May',
+                            data: [13456, 14234, 15234, 15876],
+                            borderColor: 'rgba(99, 102, 241, 1)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'June',
+                            data: [15678, 16432, 17234, 18234],
+                            borderColor: 'rgba(129, 140, 248, 1)',
+                            backgroundColor: 'rgba(129, 140, 248, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Weekly Active Users Growth'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 10000,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initEngagementTrendChart() {
+            const ctx = document.getElementById('engagementTrendChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['April', 'May', 'June'],
+                    datasets: [
+                        {
+                            label: 'Avg. Session Duration (min)',
+                            data: [21.5, 23.2, 24.5],
+                            borderColor: 'rgba(79, 70, 229, 1)',
+                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                            tension: 0.3,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Engagement Rate (%)',
+                            data: [62, 65, 68],
+                            borderColor: 'rgba(236, 72, 153, 1)',
+                            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                            tension: 0.3,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Engagement Trends'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Minutes'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Percentage'
+                            },
+                            min: 50,
+                            max: 80,
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initContentPerformanceChart() {
+            const ctx = document.getElementById('contentPerformanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Tutorials', 'Live Sessions', 'Quizzes', 'Study Groups'],
+                    datasets: [
+                        {
+                            label: 'April',
+                            data: [65, 45, 38, 28],
+                            backgroundColor: 'rgba(79, 70, 229, 0.7)'
+                        },
+                        {
+                            label: 'May',
+                            data: [68, 48, 42, 32],
+                            backgroundColor: 'rgba(99, 102, 241, 0.7)'
+                        },
+                        {
+                            label: 'June',
+                            data: [72, 52, 47, 36],
+                            backgroundColor: 'rgba(129, 140, 248, 0.7)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Content Engagement (Thousands)'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function initSessionDurationChart() {
+            const ctx = document.getElementById('sessionDurationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['<5 min', '5-15 min', '15-30 min', '30-60 min', '>60 min'],
+                    datasets: [
+                        {
+                            label: 'April',
+                            data: [15, 25, 35, 18, 7],
+                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                            borderColor: 'rgba(79, 70, 229, 1)',
+                            pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
+                        },
+                        {
+                            label: 'June',
+                            data: [12, 20, 30, 25, 13],
+                            backgroundColor: 'rgba(129, 140, 248, 0.2)',
+                            borderColor: 'rgba(129, 140, 248, 1)',
+                            pointBackgroundColor: 'rgba(129, 140, 248, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(129, 140, 248, 1)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Session Duration Distribution (%)'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 40
+                        }
+                    }
+                }
+            });
+        }
+
+        function initNewVsReturningChart() {
+            const ctx = document.getElementById('newVsReturningChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['New Users', 'Returning Users'],
+                    datasets: [
+                        {
+                            data: [18234, 15678],
+                            backgroundColor: [
+                                'rgba(79, 70, 229, 0.7)',
+                                'rgba(165, 180, 252, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(79, 70, 229, 1)',
+                                'rgba(165, 180, 252, 1)'
+                            ],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        title: {
+                            display: true,
+                            text: 'June: New vs Returning Users'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value.toLocaleString()} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initPlatformUsageChart() {
+            const ctx = document.getElementById('platformUsageChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Android', 'iOS', 'Web'],
+                    datasets: [{
+                        data: [58, 35, 7],
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(129, 140, 248, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(79, 70, 229, 1)',
+                            'rgba(99, 102, 241, 1)',
+                            'rgba(129, 140, 248, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Platform Distribution (%)'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initCoursePopularityChart() {
+            const ctx = document.getElementById('coursePopularityChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: ['Mathematics', 'Science', 'Languages', 'History', 'Arts'],
+                    datasets: [{
+                        label: 'Course Enrollments (Thousands)',
+                        data: [28.7, 24.3, 18.9, 12.4, 8.2],
+                        backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Course Popularity (June)'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    <style>
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .chart-container:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .month-section {
+            scroll-margin-top: 20px;
+        }
+        .trend-up {
+            color: #10B981;
+        }
+        .trend-down {
+            color: #EF4444;
+        }
+        .trend-neutral {
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 animate__animated animate__fadeIn">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">NOVAR Performance Dashboard</h1>
+                    <p class="text-gray-600">Comprehensive analytics for your NOVAR App (April - June 2025)</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">Logged in as</p>
+                        <p id="userEmail" class="font-medium text-indigo-600"></p>
+                    </div>
+                    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition transform hover:scale-105">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate__animated animate__fadeInUp">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Downloads</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">62,347</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-indigo-50 text-indigo-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-2 flex items-center">
+                    <span class="text-sm trend-up">+14.7%</span>
+                    <span class="text-sm text-gray-500 ml-1">vs last quarter</span>
+                </div>
+            </div>
+            
+            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate__animated animate__fadeInUp animate__delay-1s">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Active Users (30d)</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">38,721</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-green-50 text-green-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-2 flex items-center">
+                    <span class="text-sm trend-up">+9.3%</span>
+                    <span class="text-sm text-gray-500 ml-1">vs last quarter</span>
+                </div>
+            </div>
+            
+            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate__animated animate__fadeInUp animate__delay-2s">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Avg Session Duration</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">24.5 min</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-blue-50 text-blue-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-2 flex items-center">
+                    <span class="text-sm trend-up">+3.0 min</span>
+                    <span class="text-sm text-gray-500 ml-1">vs last quarter</span>
+                </div>
+            </div>
+            
+            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate__animated animate__fadeInUp animate__delay-3s">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Engagement Rate</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">68%</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-purple-50 text-purple-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-2 flex items-center">
+                    <span class="text-sm trend-up">+6%</span>
+                    <span class="text-sm text-gray-500 ml-1">vs last quarter</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Comparison Overview -->
+        <div class="chart-container p-6 mb-8 animate__animated animate__fadeIn">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Quarterly User Acquisition Comparison</h3>
+            <div class="h-80">
+                <div class="h-80 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                    <div class="text-center p-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                        <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                        <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h4 class="font-medium text-indigo-800">April Performance</h4>
+                    <p class="text-sm text-gray-700 mt-1">
+                        <span class="font-medium">9,453</span> new users (+28% from March), 
+                        <span class="font-medium">5,876</span> returning users. 
+                        Total MAU: <span class="font-medium">22,456</span>.
+                    </p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h4 class="font-medium text-indigo-800">May Performance</h4>
+                    <p class="text-sm text-gray-700 mt-1">
+                        <span class="font-medium">15,876</span> new users (+27.5% from April), 
+                        <span class="font-medium">13,245</span> returning users. 
+                        Total MAU: <span class="font-medium">35,678</span>.
+                    </p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h4 class="font-medium text-indigo-800">June Performance</h4>
+                    <p class="text-sm text-gray-700 mt-1">
+                        <span class="font-medium">18,234</span> new users (+14.9% from May), 
+                        <span class="font-medium">15,678</span> returning users. 
+                        Total MAU: <span class="font-medium">38,721</span>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- June Analytics Section -->
+        <div id="june" class="month-section bg-white rounded-xl shadow-md p-6 mb-8 animate__animated animate__fadeIn">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">June 2025 Analytics</h2>
+                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">Current Month</span>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Weekly Active Users Growth</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Engagement Trends</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">New vs Returning Users</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p><span class="font-medium">18,234</span> new users acquired in June (+14.9% from May)</p>
+                        <p><span class="font-medium">15,678</span> returning users (46% retention from May)</p>
+                    </div>
+                </div>
+                
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Platform Distribution</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p><span class="font-medium">100%</span> Android, <span class="font-medium">0%</span> iOS, <span class="font-medium">0%</span> Web</p>
+                        <p>Mobile dominates with <span class="font-medium">93%</span> of all usage</p>
+                    </div>
+                </div>
+                
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Course Popularity</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p>Mathematics leads with <span class="font-medium">37,173,5</span> enrollments</p>
+                        <p>Science follows with <span class="font-medium">25,3173,5</span> enrollments</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Content Engagement</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+                
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Session Duration</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+
+        <!-- May Analytics Section -->
+        <div id="may" class="month-section bg-white rounded-xl shadow-md p-6 mb-8 animate__animated animate__fadeIn">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">May 2025 Analytics</h2>
+                <span class="bg-gray-100 text-gray-800 text-sm font-medium px-3 py-1 rounded-full">Previous Month</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">New Users</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">15,876</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-indigo-50 text-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 16a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-up">+27.5%</span>
+                        <span class="text-sm text-gray-500 ml-1">from April</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">MAU</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">35,678</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-green-50 text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-up">+9.9%</span>
+                        <span class="text-sm text-gray-500 ml-1">from April</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Avg. Session</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">23.2 min</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-blue-50 text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-up">+1.7 min</span>
+                        <span class="text-sm text-gray-500 ml-1">from April</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Engagement</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">65%</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-purple-50 text-purple-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-up">+3%</span>
+                        <span class="text-sm text-gray-500 ml-1">from April</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-indigo-50 rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold text-indigo-800 mb-2">May Highlights</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Launched new science curriculum resulting in <span class="font-medium">24% increase</span> in science course enrollments</li>
+                    <li>Implemented push notifications leading to <span class="font-medium">18% higher</span> daily active users</li>
+                    <li>Hosted <span class="font-medium">12 live sessions</span> with average attendance of <span class="font-medium">703</span> students each</li>
+                    <li>User retention from April improved to <span class="font-medium">46%</span> (up from 42%)</li>
+                </ul>
+            </div>
+            
+            <!-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Content Performance</h3>
+                    <div class="h-64">
+                        <canvas id="contentPerformanceChartMay"></canvas>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p>All: <span class="font-medium">68,000</span> engagements (+4.6% from April)</p>
+                        <p>Tutorials: <span class="font-medium">48,000</span> engagements (+6.7% from April)</p>
+                    </div>
+                </div>
+                
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">User Activity</h3>
+                    <div class="h-64">
+                        <canvas id="userActivityChartMay"></canvas>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p><span class="font-medium">42%</span> of users accessed app 3+ times weekly</p>
+                        <p><span class="font-medium">28%</span> completed at least one tutorial weekly</p>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- April Analytics Section -->
+        <div id="april" class="month-section bg-white rounded-xl shadow-md p-6 animate__animated animate__fadeIn">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">April 2025 Analytics</h2>
+                <span class="bg-gray-100 text-gray-800 text-sm font-medium px-3 py-1 rounded-full">Previous Month</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">New Users</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">9,453</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-indigo-50 text-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 16a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-up">+28%</span>
+                        <span class="text-sm text-gray-500 ml-1">from March</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">MAU</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">22,456</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-green-50 text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-up">+7.2%</span>
+                        <span class="text-sm text-gray-500 ml-1">from March</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Avg. Session</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">21.5 min</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-blue-50 text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-neutral">±0.0 min</span>
+                        <span class="text-sm text-gray-500 ml-1">from March</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Engagement</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">62%</h3>
+                        </div>
+                        <div class="p-2 rounded-full bg-purple-50 text-purple-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="text-sm trend-down">-2%</span>
+                        <span class="text-sm text-gray-500 ml-1">from March</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-indigo-50 rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold text-indigo-800 mb-2">April Highlights</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Ran successful marketing campaign resulting in <span class="font-medium">28% user growth</span></li>
+                    <li>Identified need to improve engagement through UX improvements</li>
+                    <li>Mobile app updates led to <span class="font-medium">12% reduction</span> in crash reports</li>
+                </ul>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Content Performance</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="mt-4 text-sm text-gray-600">
+                        <p>Tutorials: <span class="font-medium">65,000</span> engagements (-3% from March)</p>
+                        <p>Live sessions: <span class="font-medium">45,000</span> engagements (-5% from March)</p>
+                    </div> -->
+                </div>
+                
+                <div class="chart-container p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">User Retention</h3>
+                    <div class="h-64">
+                        <div class="h-60 flex items-center justify-center bg-red-50 rounded-lg border border-red-100">
+                            <div class="text-center p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <h4 class="text-lg font-bold text-red-600 mt-4">ACCESS RESTRICTED</h4>
+                                <p class="text-sm text-red-500 mt-1 font-medium">You are not authorized to view this content</p>
+                                <p class="text-xs text-red-400 mt-2">Please contact your administrator for access permissions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="mt-4 text-sm text-gray-600">
+                        <p><span class="font-medium">42%</span> of new users returned after 7 days</p>
+                        <p><span class="font-medium">28%</span> retention after 30 days</p>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize May and April charts that weren't in the main initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // May Content Performance
+            const ctxMayContent = document.getElementById('contentPerformanceChartMay').getContext('2d');
+            new Chart(ctxMayContent, {
+                type: 'bar',
+                data: {
+                    labels: ['Tutorials', 'Live Sessions', 'Quizzes', 'Study Groups'],
+                    datasets: [{
+                        label: 'Engagements (Thousands)',
+                        data: [68, 48, 42, 32],
+                        backgroundColor: 'rgba(99, 102, 241, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // May User Activity
+            const ctxMayActivity = document.getElementById('userActivityChartMay').getContext('2d');
+            new Chart(ctxMayActivity, {
+                type: 'polarArea',
+                data: {
+                    labels: ['Daily Users', '3+ Weekly', 'Tutorial Completers', 'Live Attendees', 'Content Sharers'],
+                    datasets: [{
+                        data: [12453, 5234, 3489, 843, 1567],
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(129, 140, 248, 0.7)',
+                            'rgba(165, 180, 252, 0.7)',
+                            'rgba(199, 210, 254, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+
+            // April Content Performance
+            const ctxAprilContent = document.getElementById('contentPerformanceChartApril').getContext('2d');
+            new Chart(ctxAprilContent, {
+                type: 'bar',
+                data: {
+                    labels: ['Tutorials', 'Live Sessions', 'Quizzes', 'Study Groups'],
+                    datasets: [{
+                        label: 'Engagements (Thousands)',
+                        data: [65, 45, 38, 28],
+                        backgroundColor: 'rgba(79, 70, 229, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // April Retention
+            const ctxAprilRetention = document.getElementById('retentionChartApril').getContext('2d');
+            new Chart(ctxAprilRetention, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 3', 'Day 7', 'Day 14', 'Day 30'],
+                    datasets: [{
+                        label: 'User Retention %',
+                        data: [100, 78, 42, 35, 28],
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
