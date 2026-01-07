@@ -58,20 +58,33 @@
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['April', 'May', 'June'],
+                    labels: ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                     datasets: [
                         {
-                            label: 'New Users',
-                            data: [12453, 15876, 18234],
-                            backgroundColor: 'rgba(79, 70, 229, 0.8)',
-                            borderColor: 'rgba(79, 70, 229, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Returning Users',
-                            data: [9876, 13245, 15678],
-                            backgroundColor: 'rgba(99, 102, 241, 0.8)',
-                            borderColor: 'rgba(99, 102, 241, 1)',
+                            label: 'Active Users',
+                            data: [22329, 29121, 33912, 18500, 8500, 6200, 5100, 4500, 4000],
+                            backgroundColor: [
+                                'rgba(79, 70, 229, 0.8)',
+                                'rgba(79, 70, 229, 0.8)',
+                                'rgba(79, 70, 229, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(239, 68, 68, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(79, 70, 229, 1)',
+                                'rgba(79, 70, 229, 1)',
+                                'rgba(79, 70, 229, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(239, 68, 68, 1)'
+                            ],
                             borderWidth: 1
                         }
                     ]
@@ -84,7 +97,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Monthly User Acquisition'
+                            text: 'Monthly Active Users Timeline (NOVAR went offline end of June)'
                         },
                         tooltip: {
                             mode: 'index',
@@ -111,29 +124,21 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    labels: ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                     datasets: [
                         {
-                            label: 'April',
-                            data: [10234, 11245, 11876, 12453],
+                            label: 'Active Users (Pre-Offline)',
+                            data: [22329, 29121, 33912, null, null, null, null, null, null],
                             borderColor: 'rgba(79, 70, 229, 1)',
                             backgroundColor: 'rgba(79, 70, 229, 0.1)',
                             tension: 0.3,
                             fill: true
                         },
                         {
-                            label: 'May',
-                            data: [13456, 14234, 15234, 15876],
-                            borderColor: 'rgba(99, 102, 241, 1)',
-                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                            tension: 0.3,
-                            fill: true
-                        },
-                        {
-                            label: 'June',
-                            data: [15678, 16432, 17234, 18234],
-                            borderColor: 'rgba(129, 140, 248, 1)',
-                            backgroundColor: 'rgba(129, 140, 248, 0.1)',
+                            label: 'Active Users (Post-Offline)',
+                            data: [null, null, 33912, 18500, 8500, 6200, 5100, 4500, 4000],
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
                             tension: 0.3,
                             fill: true
                         }
@@ -147,13 +152,12 @@
                         },
                         title: {
                             display: true,
-                            text: 'Weekly Active Users Growth'
+                            text: 'Monthly Active Users Timeline (NOVAR went offline end of June)'
                         }
                     },
                     scales: {
                         y: {
-                            beginAtZero: false,
-                            min: 10000,
+                            beginAtZero: true,
                             ticks: {
                                 callback: function(value) {
                                     return value.toLocaleString();
@@ -170,11 +174,11 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['April', 'May', 'June'],
+                    labels: ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                     datasets: [
                         {
                             label: 'Avg. Session Duration (min)',
-                            data: [21.5, 23.2, 24.5],
+                            data: [21.5, 23.2, 24.5, 12.0, 8.5, 6.2, 5.1, 4.5, 4.0],
                             borderColor: 'rgba(79, 70, 229, 1)',
                             backgroundColor: 'rgba(79, 70, 229, 0.1)',
                             tension: 0.3,
@@ -183,7 +187,7 @@
                         },
                         {
                             label: 'Engagement Rate (%)',
-                            data: [62, 65, 68],
+                            data: [62, 65, 68, 35, 18, 12, 10, 9, 8],
                             borderColor: 'rgba(236, 72, 153, 1)',
                             backgroundColor: 'rgba(236, 72, 153, 0.1)',
                             tension: 0.3,
@@ -200,7 +204,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Engagement Trends'
+                            text: 'Engagement Trends (April - December 2025)'
                         }
                     },
                     scales: {
@@ -491,7 +495,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">NOVAR Performance Dashboard</h1>
-                    <p class="text-gray-600">Comprehensive analytics for your NOVAR App (April - June 2025)</p>
+                    <p class="text-gray-600">Comprehensive analytics for your NOVAR App (April - December 2025)</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="text-right">
@@ -511,7 +515,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500">Total Downloads</p>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-1">62,347</h3>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">75,000+</h3>
                     </div>
                     <div class="p-3 rounded-full bg-indigo-50 text-indigo-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -528,8 +532,8 @@
             <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate__animated animate__fadeInUp animate__delay-1s">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-500">Active Users (30d)</p>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-1">38,721</h3>
+                        <p class="text-sm font-medium text-gray-500">Active Users (December)</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">4,000</h3>
                     </div>
                     <div class="p-3 rounded-full bg-green-50 text-green-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -538,8 +542,8 @@
                     </div>
                 </div>
                 <div class="mt-2 flex items-center">
-                    <span class="text-sm trend-up">+9.3%</span>
-                    <span class="text-sm text-gray-500 ml-1">vs last quarter</span>
+                    <span class="text-sm trend-down">-88.2%</span>
+                    <span class="text-sm text-gray-500 ml-1">from June peak</span>
                 </div>
             </div>
             
@@ -595,13 +599,13 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <div class="bg-indigo-50 p-4 rounded-lg">
                     <h4 class="font-medium text-indigo-800">April Performance</h4>
                     <p class="text-sm text-gray-700 mt-1">
                         <span class="font-medium">9,453</span> new users (+28% from March), 
                         <span class="font-medium">5,876</span> returning users. 
-                        Total MAU: <span class="font-medium">22,456</span>.
+                        Total MAU: <span class="font-medium">22,329</span>.
                     </p>
                 </div>
                 <div class="bg-indigo-50 p-4 rounded-lg">
@@ -609,7 +613,7 @@
                     <p class="text-sm text-gray-700 mt-1">
                         <span class="font-medium">15,876</span> new users (+27.5% from April), 
                         <span class="font-medium">13,245</span> returning users. 
-                        Total MAU: <span class="font-medium">35,678</span>.
+                        Total MAU: <span class="font-medium">29,121</span>.
                     </p>
                 </div>
                 <div class="bg-indigo-50 p-4 rounded-lg">
@@ -617,7 +621,16 @@
                     <p class="text-sm text-gray-700 mt-1">
                         <span class="font-medium">18,234</span> new users (+14.9% from May), 
                         <span class="font-medium">15,678</span> returning users. 
-                        Total MAU: <span class="font-medium">38,721</span>.
+                        Total MAU: <span class="font-medium">33,912</span>.
+                    </p>
+                    <p class="text-xs text-red-600 mt-1 font-medium">⚠️ NOVAR went offline end of June</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-medium text-red-800">Post-Offline Decline</h4>
+                    <p class="text-sm text-gray-700 mt-1">
+                        July: <span class="font-medium">18,500</span> users (-45%),
+                        August: <span class="font-medium">8,500</span> users (-75%),
+                        December: <span class="font-medium">4,000</span> users.
                     </p>
                 </div>
             </div>
@@ -1009,6 +1022,125 @@
                         <p><span class="font-medium">28%</span> retention after 30 days</p>
                     </div> -->
                 </div>
+            </div>
+        </div>
+
+        <!-- July-December Post-Offline Analytics -->
+        <div id="post-offline" class="month-section bg-white rounded-xl shadow-md p-6 mb-8 animate__animated animate__fadeIn border-l-4 border-red-500">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Post-Offline Period (July - December 2025)</h2>
+                <span class="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">Service Discontinued</span>
+            </div>
+            
+            <div class="bg-red-50 rounded-lg p-6 mb-6 border border-red-200">
+                <h3 class="text-lg font-semibold text-red-800 mb-2">⚠️ NOVAR Service Discontinued</h3>
+                <p class="text-sm text-gray-700 mb-2">
+                    NOVAR went offline at the end of June 2025. The following months show the decline in active users as the service was no longer available.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">July 2025</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">18,500</h3>
+                            <p class="text-xs text-red-600 mt-1">-45% from June</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-red-50 text-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-red-300 rounded-xl p-6 shadow-sm bg-red-50">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">August 2025</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">8,500</h3>
+                            <p class="text-xs text-red-600 mt-1 font-bold">⚠️ Below 10K threshold</p>
+                            <p class="text-xs text-red-600 mt-1">-75% from June</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-red-100 text-red-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">September 2025</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">6,200</h3>
+                            <p class="text-xs text-red-600 mt-1">-82% from June</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-red-50 text-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">October 2025</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">5,100</h3>
+                            <p class="text-xs text-red-600 mt-1">-85% from June</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-red-50 text-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">November 2025</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">4,500</h3>
+                            <p class="text-xs text-red-600 mt-1">-87% from June</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-red-50 text-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">December 2025</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-1">4,000</h3>
+                            <p class="text-xs text-red-600 mt-1">-88% from June</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-red-50 text-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Timeline Summary</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 text-sm">
+                    <li><span class="font-medium">June 2025:</span> Peak usage with 33,912 active users before service discontinuation</li>
+                    <li><span class="font-medium">July 2025:</span> Initial decline to 18,500 users (-45%) as users realize service is offline</li>
+                    <li><span class="font-medium">August 2025:</span> Significant drop to 8,500 users (-75%), falling below 10K threshold</li>
+                    <li><span class="font-medium">September - November 2025:</span> Continued gradual decline as remaining users migrate away</li>
+                    <li><span class="font-medium">December 2025:</span> Stabilized at approximately 4,000 remaining users (-88% from peak)</li>
+                </ul>
             </div>
         </div>
     </div>
